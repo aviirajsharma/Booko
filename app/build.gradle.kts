@@ -55,4 +55,19 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    // Retrofit core library
+    implementation(libs.retrofit)
+
+    // JSON Converters
+    implementation(libs.converter.gson)
+
+    //OkHttp
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+
+    // Core Compose support
+    implementation(libs.coil.compose)
+    // Network support for Coil 3
+    implementation(libs.coil.network.okhttp)
 }

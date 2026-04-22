@@ -1,28 +1,33 @@
-package com.avirajsharma.booko
+package com.avirajsharma.booko.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.avirajsharma.booko.ui.theme.BookoTheme
+import com.avirajsharma.booko.presentation.screens.HomeScreen
+import com.avirajsharma.booko.presentation.ui.theme.BookoTheme
+import com.avirajsharma.booko.presentation.viewmodels.HomeScreenViewModel
 
 class MainActivity : ComponentActivity() {
+
+
+    private val viewModel: HomeScreenViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             BookoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                    HomeScreen(
+                        modifier = Modifier.padding(innerPadding),
+                        viewModel = viewModel
                     )
                 }
             }
@@ -30,18 +35,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BookoTheme {
-        Greeting("Android")
-    }
-}
