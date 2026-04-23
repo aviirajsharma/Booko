@@ -70,4 +70,7 @@ dependencies {
     implementation(libs.coil.compose)
     // Network support for Coil 3
     implementation(libs.coil.network.okhttp)
+
+    // Material Icons
+    implementation(libs.androidx.compose.material.icons.extended)
 }
