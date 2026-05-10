@@ -1,6 +1,5 @@
 package com.avirajsharma.booko.presentation
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,29 +8,51 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.avirajsharma.booko.presentation.screens.HomeScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.avirajsharma.booko.presentation.navigation.BookoNav
+import com.avirajsharma.booko.presentation.screens.homescreen.HomeScreen
+import com.avirajsharma.booko.presentation.screens.homescreen.HomeScreenViewModel
+import com.avirajsharma.booko.presentation.screens.searchscreen.SearchScreenViewModel
+import com.avirajsharma.booko.presentation.screens.splashscreen.SplashScreen
 import com.avirajsharma.booko.presentation.ui.theme.BookoTheme
-import com.avirajsharma.booko.presentation.viewmodels.HomeScreenViewModel
+import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
 
-
-    private val viewModel: HomeScreenViewModel by viewModels()
+    private val homeScreenViewModel: HomeScreenViewModel by viewModels()
+    private val searchScreenViewModel: SearchScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen() // Add this line
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             BookoTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HomeScreen(
-                        modifier = Modifier.padding(innerPadding),
-                        viewModel = viewModel
-                    )
+                var showSplashScreen by remember { mutableStateOf(true) }
+
+                LaunchedEffect(Unit) {
+                    delay(2000) 
+                    showSplashScreen = false
+                }
+
+                if (showSplashScreen) {
+                    SplashScreen()
+                } else {
+                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                        BookoNav(
+                            modifier = Modifier.padding(innerPadding),
+                            homeScreenViewModel = homeScreenViewModel,
+                            searchScreenViewModel = searchScreenViewModel
+                        )
+                    }
                 }
             }
         }
     }
 }
-

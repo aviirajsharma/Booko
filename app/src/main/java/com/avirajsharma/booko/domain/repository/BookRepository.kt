@@ -4,4 +4,6 @@ import com.avirajsharma.booko.data.model.BooksResponse
 
 interface BookRepository {
     suspend fun getBooks(): BooksResponse
+
+    suspend fun searchBooks(query : String) : BooksResponse
 }

@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+
+    //kotlin-serialization-plugin
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -73,4 +76,13 @@ dependencies {
 
     // Material Icons
     implementation(libs.androidx.compose.material.icons.extended)
+
+    // Splash Screen
+    implementation(libs.androidx.core.splashscreen)
+
+    //navigation
+    implementation(libs.androidx.navigation.compose)
+
+    //kotlin-serialization
+    implementation(libs.kotlinx.serialization.json)
 }

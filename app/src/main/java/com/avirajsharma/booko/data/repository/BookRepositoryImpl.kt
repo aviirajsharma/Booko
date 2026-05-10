@@ -14,4 +14,8 @@ class BookRepositoryImpl : BookRepository {
     override suspend fun getBooks(): BooksResponse {
         return apiService.getBooks()
     }
+
+    override suspend fun searchBooks(query: String): BooksResponse {
+        return apiService.searchBook(query = query)
+    }
 }
