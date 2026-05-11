@@ -7,3 +7,6 @@ object Home
 
 @Serializable
 object Search
+
+@Serializable
+data class Detail(val bookId: String)

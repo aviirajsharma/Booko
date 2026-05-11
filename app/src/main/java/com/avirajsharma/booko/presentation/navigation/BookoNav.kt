@@ -5,6 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.avirajsharma.booko.presentation.screens.detailscreen.BookDetailScreen
 import com.avirajsharma.booko.presentation.screens.homescreen.HomeScreen
 import com.avirajsharma.booko.presentation.screens.homescreen.HomeScreenViewModel
 import com.avirajsharma.booko.presentation.screens.searchscreen.SearchScreen
@@ -12,9 +14,7 @@ import com.avirajsharma.booko.presentation.screens.searchscreen.SearchScreenView
 
 @Composable
 fun BookoNav(
-    modifier: Modifier = Modifier,
-    homeScreenViewModel: HomeScreenViewModel,
-    searchScreenViewModel: SearchScreenViewModel
+    modifier: Modifier = Modifier
 ) {
 
     val navController = rememberNavController()
@@ -23,16 +23,25 @@ fun BookoNav(
     NavHost(navController = navController, startDestination = Home, modifier = modifier) {
         composable<Home> {
             HomeScreen(
+                onBookCardClick = { bookId ->
+                    navController.navigate(Detail(bookId))
+                },
                 onSearchClicked = {
                     navController.navigate(Search)
-                },
-                viewModel = homeScreenViewModel
+                }
             )
         }
         composable<Search> {
             SearchScreen(
-                viewModel = searchScreenViewModel
+                onBookCardClick = { bookId ->
+                    navController.navigate(Detail(bookId))
+                }
             )
+        }
+
+        composable<Detail> { backStackEntry ->
+            val bookId = backStackEntry.toRoute<Detail>().bookId
+            BookDetailScreen(bookId = bookId)
         }
     }
 

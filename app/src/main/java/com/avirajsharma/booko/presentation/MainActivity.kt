@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -16,9 +15,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.avirajsharma.booko.presentation.navigation.BookoNav
-import com.avirajsharma.booko.presentation.screens.homescreen.HomeScreen
-import com.avirajsharma.booko.presentation.screens.homescreen.HomeScreenViewModel
-import com.avirajsharma.booko.presentation.screens.searchscreen.SearchScreenViewModel
 import com.avirajsharma.booko.presentation.screens.splashscreen.SplashScreen
 import com.avirajsharma.booko.presentation.ui.theme.BookoTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,11 +23,9 @@ import kotlinx.coroutines.delay
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val homeScreenViewModel: HomeScreenViewModel by viewModels()
-    private val searchScreenViewModel: SearchScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen() // Add this line
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -39,7 +33,7 @@ class MainActivity : ComponentActivity() {
                 var showSplashScreen by remember { mutableStateOf(true) }
 
                 LaunchedEffect(Unit) {
-                    delay(2000) 
+                    delay(2000)
                     showSplashScreen = false
                 }
 
@@ -48,9 +42,7 @@ class MainActivity : ComponentActivity() {
                 } else {
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                         BookoNav(
-                            modifier = Modifier.padding(innerPadding),
-                            homeScreenViewModel = homeScreenViewModel,
-                            searchScreenViewModel = searchScreenViewModel
+                            modifier = Modifier.padding(innerPadding)
                         )
                     }
                 }

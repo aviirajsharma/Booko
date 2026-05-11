@@ -1,6 +1,7 @@
 package com.avirajsharma.booko.presentation.components
 
 import android.content.Intent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -35,13 +36,14 @@ import com.avirajsharma.booko.data.model.Book
 
 
 @Composable
-fun BookCard(book: Book) {
+fun BookCard(book: Book, onBookCardClick: (String) -> Unit) {
     val context = LocalContext.current
 
     ElevatedCard(
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier
             .fillMaxWidth()
+            .clickable(onClick = { onBookCardClick(book.id) })
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.elevatedCardColors(
             containerColor = MaterialTheme.colorScheme.surface

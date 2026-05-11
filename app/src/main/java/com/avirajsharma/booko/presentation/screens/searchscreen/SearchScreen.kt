@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.avirajsharma.booko.presentation.components.BookCard
 import com.avirajsharma.booko.presentation.components.EmptyState
@@ -29,7 +30,11 @@ import com.avirajsharma.booko.presentation.screens.LoadingScreen
 
 
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier, viewModel: SearchScreenViewModel) {
+fun SearchScreen(
+    modifier: Modifier = Modifier,
+    viewModel: SearchScreenViewModel = hiltViewModel(),
+    onBookCardClick: (String) -> Unit
+) {
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -86,7 +91,7 @@ fun SearchScreen(modifier: Modifier = Modifier, viewModel: SearchScreenViewModel
                 } else {
                     LazyColumn {
                         items(books) { book ->
-                            BookCard(book = book)
+                            BookCard(book = book, onBookCardClick = onBookCardClick)
                         }
                     }
                 }

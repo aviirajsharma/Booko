@@ -1,5 +1,6 @@
 package com.avirajsharma.booko.data.repository
 
+import com.avirajsharma.booko.data.model.BookDetailResponse
 import com.avirajsharma.booko.data.model.BooksResponse
 import com.avirajsharma.booko.data.remote.ApiService
 import com.avirajsharma.booko.domain.repository.BookRepository
@@ -13,5 +14,9 @@ class BookRepositoryImpl @Inject constructor(private val apiService: ApiService)
 
     override suspend fun searchBooks(query: String): BooksResponse {
         return apiService.searchBook(query = query)
+    }
+
+    override suspend fun getBookDetail(bookId: String): BookDetailResponse {
+        return apiService.getBookDetail(bookId)
     }
 }

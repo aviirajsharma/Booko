@@ -1,4 +1,4 @@
-package com.avirajsharma.booko
+package com.avirajsharma.booko.presentation
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

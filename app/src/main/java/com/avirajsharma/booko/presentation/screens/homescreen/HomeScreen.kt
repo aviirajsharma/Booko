@@ -10,19 +10,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.avirajsharma.booko.presentation.components.BookCard
 import com.avirajsharma.booko.presentation.components.SearchBarPlaceholder
 import com.avirajsharma.booko.presentation.screens.ErrorScreen
 import com.avirajsharma.booko.presentation.screens.LoadingScreen
-import com.avirajsharma.booko.presentation.screens.searchscreen.SearchUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeScreenViewModel,
+    viewModel: HomeScreenViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
-    onSearchClicked: () -> Unit
+    onSearchClicked: () -> Unit,
+    onBookCardClick: (String) -> Unit
 ) {
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -47,7 +49,7 @@ fun HomeScreen(
 
                 LazyColumn {
                     items(books) { book ->
-                        BookCard(book = book)
+                        BookCard(book = book, onBookCardClick = onBookCardClick)
                     }
                 }
             }

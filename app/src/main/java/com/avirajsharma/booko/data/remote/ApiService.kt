@@ -1,5 +1,6 @@
 package com.avirajsharma.booko.data.remote
 
+import com.avirajsharma.booko.data.model.BookDetailResponse
 import com.avirajsharma.booko.data.model.BooksResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -12,6 +13,9 @@ interface ApiService {
     //Search Books
     //https://www.dbooks.org/api/search/{query}
 
+    //Book Details
+    //https://www.dbooks.org/api/book/{id}
+
     @GET("recent")
     suspend fun getBooks(): BooksResponse
 
@@ -20,7 +24,12 @@ interface ApiService {
         @Path("query") query: String
     ): BooksResponse
 
-    companion object{
+    @GET("book/{id}")
+    suspend fun getBookDetail(
+        @Path("id") id: String
+    ): BookDetailResponse
+
+    companion object {
         const val BASE_URL = "https://www.dbooks.org/api/"
     }
 }
