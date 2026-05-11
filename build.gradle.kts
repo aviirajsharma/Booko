@@ -4,5 +4,11 @@ plugins {
     alias(libs.plugins.kotlin.compose) apply false
 
     //kotlin-serialization-plugin
-    kotlin("plugin.serialization") version "1.9.22" apply false
+    alias(libs.plugins.kotlin.serialization) apply false
+
+    //hilt-plugin
+    alias(libs.plugins.hilt) apply false
+
+    //ksp-plugin
+    alias(libs.plugins.ksp) apply false
 }

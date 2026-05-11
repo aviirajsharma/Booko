@@ -4,6 +4,10 @@ plugins {
 
     //kotlin-serialization-plugin
     kotlin("plugin.serialization")
+    //ksp
+    alias(libs.plugins.ksp)
+    //dagger-hilt
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -80,9 +84,13 @@ dependencies {
     // Splash Screen
     implementation(libs.androidx.core.splashscreen)
 
-    //navigation
+    // Navigation
     implementation(libs.androidx.navigation.compose)
 
-    //kotlin-serialization
+    // Kotlin-serialization
     implementation(libs.kotlinx.serialization.json)
+
+    // Dagger-Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 }

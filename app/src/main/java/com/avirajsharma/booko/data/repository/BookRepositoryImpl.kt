@@ -2,14 +2,10 @@ package com.avirajsharma.booko.data.repository
 
 import com.avirajsharma.booko.data.model.BooksResponse
 import com.avirajsharma.booko.data.remote.ApiService
-import com.avirajsharma.booko.data.remote.RetrofitInstance
 import com.avirajsharma.booko.domain.repository.BookRepository
+import jakarta.inject.Inject
 
-class BookRepositoryImpl : BookRepository {
-
-    private val apiService: ApiService by lazy {
-        RetrofitInstance.getApiService()
-    }
+class BookRepositoryImpl @Inject constructor(private val apiService: ApiService) : BookRepository {
 
     override suspend fun getBooks(): BooksResponse {
         return apiService.getBooks()

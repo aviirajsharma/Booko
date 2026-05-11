@@ -19,4 +19,8 @@ interface ApiService {
     suspend fun searchBook(
         @Path("query") query: String
     ): BooksResponse
+
+    companion object{
+        const val BASE_URL = "https://www.dbooks.org/api/"
+    }
 }

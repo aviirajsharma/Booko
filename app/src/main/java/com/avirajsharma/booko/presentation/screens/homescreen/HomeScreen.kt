@@ -28,7 +28,7 @@ fun HomeScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     Column(Modifier.fillMaxSize()) {
-        SearchBarPlaceholder(onSearchClicked)
+        SearchBarPlaceholder(onClick = onSearchClicked)
         Spacer(Modifier.height(18.dp))
 
         when (state) {

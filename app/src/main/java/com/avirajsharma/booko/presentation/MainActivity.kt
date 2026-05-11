@@ -21,8 +21,10 @@ import com.avirajsharma.booko.presentation.screens.homescreen.HomeScreenViewMode
 import com.avirajsharma.booko.presentation.screens.searchscreen.SearchScreenViewModel
 import com.avirajsharma.booko.presentation.screens.splashscreen.SplashScreen
 import com.avirajsharma.booko.presentation.ui.theme.BookoTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val homeScreenViewModel: HomeScreenViewModel by viewModels()

@@ -4,17 +4,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avirajsharma.booko.data.model.BooksResponse
 import com.avirajsharma.booko.domain.usecases.GetBooksUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomeScreenViewModel : ViewModel() {
+@HiltViewModel
+class HomeScreenViewModel @Inject constructor(
+    private val bookUseCase: GetBooksUseCase
+) : ViewModel() {
 
-    private val bookUseCase: GetBooksUseCase by lazy {
-        GetBooksUseCase()
-    }
 
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
@@ -30,7 +31,7 @@ class HomeScreenViewModel : ViewModel() {
                 result.onSuccess { data ->
                     _uiState.value = HomeUiState.Success(data)
                 }.onFailure { error ->
-                    _uiState.value = HomeUiState.Error(error.message ?:"Unknown Error")
+                    _uiState.value = HomeUiState.Error(error.message ?: "Unknown Error")
                 }
             }
         }
@@ -45,9 +46,9 @@ class HomeScreenViewModel : ViewModel() {
 //    val data: BooksResponse? = null
 //)
 
-sealed interface HomeUiState{
+sealed interface HomeUiState {
     data object Loading : HomeUiState
-    data class Error(val error: String): HomeUiState
+    data class Error(val error: String) : HomeUiState
     data class Success(val data: BooksResponse) : HomeUiState
 
 }
