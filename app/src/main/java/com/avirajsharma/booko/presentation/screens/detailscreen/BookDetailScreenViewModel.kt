@@ -3,6 +3,7 @@ package com.avirajsharma.booko.presentation.screens.detailscreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avirajsharma.booko.data.model.BookDetailResponse
+import com.avirajsharma.booko.domain.usecases.DownloadBookUseCase
 import com.avirajsharma.booko.domain.usecases.GetBookDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -13,7 +14,10 @@ import kotlinx.coroutines.launch
 
 
 @HiltViewModel
-class BookDetailScreenViewModel @Inject constructor(private val getBookDetailUseCase: GetBookDetailUseCase) :
+class BookDetailScreenViewModel @Inject constructor(
+    private val getBookDetailUseCase: GetBookDetailUseCase,
+    private val downloadBookUseCase: DownloadBookUseCase
+) :
     ViewModel() {
     private val _uiState = MutableStateFlow<DetailUiState>(DetailUiState.Loading)
     val uiState: StateFlow<DetailUiState> = _uiState.asStateFlow()
@@ -29,6 +33,12 @@ class BookDetailScreenViewModel @Inject constructor(private val getBookDetailUse
                     _uiState.value = DetailUiState.Error(it.message.toString())
                 }
             }
+        }
+    }
+
+    fun downloadBook(book: BookDetailResponse) {
+        viewModelScope.launch {
+            downloadBookUseCase(book)
         }
     }
 }

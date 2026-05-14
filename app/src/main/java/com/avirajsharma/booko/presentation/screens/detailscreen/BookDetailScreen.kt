@@ -69,7 +69,10 @@ fun BookDetailScreen(
             }
 
             is DetailUiState.Success -> {
-                DetailBookCard(book = (state as DetailUiState.Success).data)
+                val response = state as DetailUiState.Success
+                DetailBookCard(book = response.data, onDownloadClick = {
+                    viewModel.downloadBook(response.data)
+                })
             }
         }
     }
@@ -77,7 +80,11 @@ fun BookDetailScreen(
 
 
 @Composable
-fun DetailBookCard(modifier: Modifier = Modifier, book: BookDetailResponse) {
+fun DetailBookCard(
+    modifier: Modifier = Modifier,
+    book: BookDetailResponse,
+    onDownloadClick: () -> Unit
+) {
     val scrollState = rememberScrollState()
 
     Box(
@@ -189,7 +196,9 @@ fun DetailBookCard(modifier: Modifier = Modifier, book: BookDetailResponse) {
 
         // Custom Overlay UI: Action Button
         Button(
-            onClick = { /* Download Logic */ },
+            onClick = {
+                onDownloadClick()
+            },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 24.dp)

@@ -2,8 +2,12 @@ package com.avirajsharma.booko.data.remote
 
 import com.avirajsharma.booko.data.model.BookDetailResponse
 import com.avirajsharma.booko.data.model.BooksResponse
+import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Streaming
+import retrofit2.http.Url
 
 interface ApiService {
 
@@ -23,7 +27,6 @@ interface ApiService {
     suspend fun searchBook(
         @Path("query") query: String
     ): BooksResponse
-
     @GET("book/{id}")
     suspend fun getBookDetail(
         @Path("id") id: String

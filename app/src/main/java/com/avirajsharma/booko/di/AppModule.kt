@@ -2,6 +2,7 @@ package com.avirajsharma.booko.di
 
 import com.avirajsharma.booko.data.remote.ApiService
 import com.avirajsharma.booko.domain.repository.BookRepository
+import com.avirajsharma.booko.domain.usecases.DownloadBookUseCase
 import com.avirajsharma.booko.domain.usecases.GetBookDetailUseCase
 import com.avirajsharma.booko.domain.usecases.GetBooksUseCase
 import com.avirajsharma.booko.domain.usecases.SearchBookUseCase
@@ -55,6 +56,11 @@ object AppModule {
     @Provides
     fun provideGetBookDetailUseCase(repository: BookRepository): GetBookDetailUseCase {
         return GetBookDetailUseCase(repository)
+    }
+
+    @Provides
+    fun provideDownloadBookUseCase(repository: BookRepository): DownloadBookUseCase {
+        return DownloadBookUseCase(repository)
     }
 
 
