@@ -4,15 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.avirajsharma.booko.presentation.navigation.BookoNav
 import com.avirajsharma.booko.presentation.screens.splashscreen.SplashScreen
@@ -40,13 +36,10 @@ class MainActivity : ComponentActivity() {
                 if (showSplashScreen) {
                     SplashScreen()
                 } else {
-                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                        BookoNav(
-                            modifier = Modifier.padding(innerPadding)
-                        )
-                    }
+                    BookoNav()
                 }
             }
         }
     }
 }
+

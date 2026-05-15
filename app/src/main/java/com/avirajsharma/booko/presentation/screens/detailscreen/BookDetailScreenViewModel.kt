@@ -6,7 +6,7 @@ import com.avirajsharma.booko.data.model.BookDetailResponse
 import com.avirajsharma.booko.domain.usecases.DownloadBookUseCase
 import com.avirajsharma.booko.domain.usecases.GetBookDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

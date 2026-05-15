@@ -1,16 +1,31 @@
 package com.avirajsharma.booko.presentation.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.avirajsharma.booko.presentation.screens.detailscreen.BookDetailScreen
 import com.avirajsharma.booko.presentation.screens.homescreen.HomeScreen
-import com.avirajsharma.booko.presentation.screens.homescreen.HomeScreenViewModel
+import com.avirajsharma.booko.presentation.screens.mybooksscreen.MyBooksScreen
 import com.avirajsharma.booko.presentation.screens.searchscreen.SearchScreen
-import com.avirajsharma.booko.presentation.screens.searchscreen.SearchScreenViewModel
+import com.avirajsharma.booko.presentation.screens.settingsscreen.SettingsScreen
 
 @Composable
 fun BookoNav(
@@ -19,30 +34,108 @@ fun BookoNav(
 
     val navController = rememberNavController()
 
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
 
-    NavHost(navController = navController, startDestination = Home, modifier = modifier) {
-        composable<Home> {
-            HomeScreen(
-                onBookCardClick = { bookId ->
-                    navController.navigate(Detail(bookId))
-                },
-                onSearchClicked = {
-                    navController.navigate(Search)
-                }
-            )
-        }
-        composable<Search> {
-            SearchScreen(
-                onBookCardClick = { bookId ->
-                    navController.navigate(Detail(bookId))
-                }
-            )
-        }
+    //val showBottomBar = bottomBarItems.any { currentDestination?.hasRoute(it.route::class) == true }
 
-        composable<Detail> { backStackEntry ->
-            val bookId = backStackEntry.toRoute<Detail>().bookId
-            BookDetailScreen(bookId = bookId)
+
+    Scaffold(modifier = Modifier.fillMaxSize(), bottomBar = {
+        //if (showBottomBar) {
+        NavigationBar {
+            bottomBarItems.forEach { screen ->
+                NavigationBarItem(
+                    selected = currentDestination?.hasRoute(screen.route::class) == true,
+                    onClick = {
+                        navController.navigate(screen.route) {
+                            popUpTo(
+                                navController.graph.startDestinationId
+                            ) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                    icon = {
+                        Icon(imageVector = screen.icon, contentDescription = screen.label)
+                    },
+
+                    label = {
+                        Text(screen.label)
+                    }
+                )
+                //}
+            }
+        }
+    }) { innerPadding ->
+
+        NavHost(
+            navController = navController,
+            startDestination = Home,
+            modifier = modifier.padding(innerPadding)
+        ) {
+            composable<Home> {
+                HomeScreen(
+                    onBookCardClick = { bookId ->
+                        navController.navigate(Detail(bookId))
+                    },
+                    onSearchClicked = {
+                        navController.navigate(Search)
+                    }
+                )
+            }
+            composable<Search> {
+                SearchScreen(
+                    onBookCardClick = { bookId ->
+                        navController.navigate(Detail(bookId))
+                    }
+                )
+            }
+
+            composable<Detail> { backStackEntry ->
+                val bookId = backStackEntry.toRoute<Detail>().bookId
+                BookDetailScreen(bookId = bookId)
+            }
+
+            composable<MyBooks> {
+                MyBooksScreen()
+            }
+
+            composable<Settings> {
+                SettingsScreen()
+            }
         }
     }
 
 }
+
+sealed class Screen(
+    val route: Any,
+    val label: String,
+    val icon: ImageVector
+) {
+    data object HomeScreen : Screen(
+        route = Home,
+        label = "Home",
+        icon = Icons.Default.Home
+    )
+
+    data object MyBooksScreen : Screen(
+        route = MyBooks,
+        label = "My Books",
+        icon = Icons.Default.Book
+    )
+
+    data object SettingsScreen : Screen(
+        route = Settings,
+        label = "Settings",
+        icon = Icons.Default.Settings
+    )
+}
+
+val bottomBarItems = listOf(
+    Screen.HomeScreen,
+    Screen.MyBooksScreen,
+    Screen.SettingsScreen
+)

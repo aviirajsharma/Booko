@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class DownloadBookUseCase @Inject constructor(private val repository: BookRepository) {
 
-    operator fun invoke(book: BookDetailResponse) {
+    suspend operator fun invoke(book: BookDetailResponse) {
 
         repository.downloadBook(book)
     }

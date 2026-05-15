@@ -10,3 +10,9 @@ object Search
 
 @Serializable
 data class Detail(val bookId: String)
+
+@Serializable
+data object MyBooks
+
+@Serializable
+data object Settings

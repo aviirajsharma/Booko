@@ -1,14 +1,20 @@
 package com.avirajsharma.booko.di
 
+import android.content.Context
+import androidx.room.Room
+import com.avirajsharma.booko.data.local.BookDao
+import com.avirajsharma.booko.data.local.BookoDatabase
 import com.avirajsharma.booko.data.remote.ApiService
 import com.avirajsharma.booko.domain.repository.BookRepository
 import com.avirajsharma.booko.domain.usecases.DownloadBookUseCase
+import com.avirajsharma.booko.domain.usecases.GetAllBooksUseCase
 import com.avirajsharma.booko.domain.usecases.GetBookDetailUseCase
 import com.avirajsharma.booko.domain.usecases.GetBooksUseCase
 import com.avirajsharma.booko.domain.usecases.SearchBookUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -43,6 +49,22 @@ object AppModule {
             .create(ApiService::class.java)
     }
 
+
+    @Provides
+    @Singleton
+    fun provideDatabase(@ApplicationContext context: Context): BookoDatabase {
+        return Room.databaseBuilder(
+            context,
+            klass = BookoDatabase::class.java,
+            name = "booko_db"
+        ).fallbackToDestructiveMigration().build()
+    }
+
+    @Provides
+    fun provideBookDao(database: BookoDatabase): BookDao {
+        return database.bookDao()
+    }
+
     @Provides
     fun provideGetBookUseCase(repository: BookRepository): GetBooksUseCase {
         return GetBooksUseCase(repository)
@@ -61,6 +83,11 @@ object AppModule {
     @Provides
     fun provideDownloadBookUseCase(repository: BookRepository): DownloadBookUseCase {
         return DownloadBookUseCase(repository)
+    }
+
+    @Provides
+    fun provideGetAllBooksUseCase(repository: BookRepository): GetAllBooksUseCase {
+        return GetAllBooksUseCase(repository)
     }
 
 
