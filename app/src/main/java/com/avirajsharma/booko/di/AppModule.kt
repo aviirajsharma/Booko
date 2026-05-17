@@ -6,10 +6,12 @@ import com.avirajsharma.booko.data.local.BookDao
 import com.avirajsharma.booko.data.local.BookoDatabase
 import com.avirajsharma.booko.data.remote.ApiService
 import com.avirajsharma.booko.domain.repository.BookRepository
+import com.avirajsharma.booko.domain.usecases.DeleteBookUseCase
 import com.avirajsharma.booko.domain.usecases.DownloadBookUseCase
 import com.avirajsharma.booko.domain.usecases.GetAllBooksUseCase
 import com.avirajsharma.booko.domain.usecases.GetBookDetailUseCase
 import com.avirajsharma.booko.domain.usecases.GetBooksUseCase
+import com.avirajsharma.booko.domain.usecases.OpenPDFUseCase
 import com.avirajsharma.booko.domain.usecases.SearchBookUseCase
 import dagger.Module
 import dagger.Provides
@@ -88,6 +90,17 @@ object AppModule {
     @Provides
     fun provideGetAllBooksUseCase(repository: BookRepository): GetAllBooksUseCase {
         return GetAllBooksUseCase(repository)
+    }
+
+    @Provides
+    fun provideOpenPDFUseCase(repository: BookRepository): OpenPDFUseCase {
+        return OpenPDFUseCase(repository)
+    }
+
+
+    @Provides
+    fun provideDeleteBookUseCase(repository: BookRepository): DeleteBookUseCase {
+        return DeleteBookUseCase(repository)
     }
 
 

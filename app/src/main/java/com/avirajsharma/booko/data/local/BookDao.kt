@@ -22,4 +22,9 @@ interface BookDao {
     @Query("SELECT * FROM books WHERE id = :bookId")
     suspend fun getBookById(bookId: String): BookEntity?
 
+    @Query("SELECT * FROM books WHERE downloadId = :downloadId")
+    suspend fun getBookByDownloadId(downloadId: Long): BookEntity?
+
+    @Query("UPDATE books SET isDownloaded = :isDownloaded WHERE downloadId = :downloadId")
+    suspend fun updateDownloadStatus(downloadId: Long, isDownloaded: Boolean)
 }
