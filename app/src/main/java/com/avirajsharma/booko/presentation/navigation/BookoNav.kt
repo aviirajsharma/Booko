@@ -6,6 +6,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Book
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -16,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -31,45 +35,46 @@ import com.avirajsharma.booko.presentation.screens.settingsscreen.SettingsScreen
 fun BookoNav(
     modifier: Modifier = Modifier
 ) {
-
     val navController = rememberNavController()
-
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    //val showBottomBar = bottomBarItems.any { currentDestination?.hasRoute(it.route::class) == true }
+    val showBottomBar = bottomBarItems.any { currentDestination?.hasRoute(it.route::class) == true }
 
-
-    Scaffold(modifier = Modifier.fillMaxSize(), bottomBar = {
-        //if (showBottomBar) {
-        NavigationBar {
-            bottomBarItems.forEach { screen ->
-                NavigationBarItem(
-                    selected = currentDestination?.hasRoute(screen.route::class) == true,
-                    onClick = {
-                        navController.navigate(screen.route) {
-                            popUpTo(
-                                navController.graph.startDestinationId
-                            ) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    },
-                    icon = {
-                        Icon(imageVector = screen.icon, contentDescription = screen.label)
-                    },
-
-                    label = {
-                        Text(screen.label)
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        bottomBar = {
+            if (showBottomBar) {
+                NavigationBar {
+                    bottomBarItems.forEach { screen ->
+                        val isSelected = currentDestination?.hasRoute(screen.route::class) == true
+                        NavigationBarItem(
+                            selected = isSelected,
+                            onClick = {
+                                navController.navigate(screen.route) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            },
+                            icon = {
+                                Icon(
+                                    imageVector = if (isSelected) screen.selectedIcon else screen.icon,
+                                    contentDescription = screen.label
+                                )
+                            },
+                            label = {
+                                Text(screen.label)
+                            },
+                            alwaysShowLabel = false
+                        )
                     }
-                )
-                //}
+                }
             }
         }
-    }) { innerPadding ->
-
+    ) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = Home,
@@ -107,30 +112,33 @@ fun BookoNav(
             }
         }
     }
-
 }
 
 sealed class Screen(
     val route: Any,
     val label: String,
-    val icon: ImageVector
+    val icon: ImageVector,
+    val selectedIcon: ImageVector
 ) {
     data object HomeScreen : Screen(
         route = Home,
         label = "Home",
-        icon = Icons.Default.Home
+        icon = Icons.Outlined.Home,
+        selectedIcon = Icons.Filled.Home
     )
 
     data object MyBooksScreen : Screen(
         route = MyBooks,
         label = "My Books",
-        icon = Icons.Default.Book
+        icon = Icons.Outlined.Book,
+        selectedIcon = Icons.Filled.Book,
     )
 
     data object SettingsScreen : Screen(
         route = Settings,
         label = "Settings",
-        icon = Icons.Default.Settings
+        icon = Icons.Outlined.Settings,
+        selectedIcon = Icons.Filled.Settings
     )
 }
 
