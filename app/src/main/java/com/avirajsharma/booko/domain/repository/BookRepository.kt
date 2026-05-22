@@ -19,5 +19,5 @@ interface BookRepository {
 
     fun openPdf(context: Context, filePath: String)
 
-    suspend fun deleteBook(bookId: String)
+    suspend fun deleteBook(book: BookEntity)
 }

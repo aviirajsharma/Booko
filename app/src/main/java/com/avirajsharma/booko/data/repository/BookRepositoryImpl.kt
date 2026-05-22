@@ -106,7 +106,13 @@ class BookRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteBook(bookId: String) {
-        bookDao.deleteBook(bookId = bookId)
+    override suspend fun deleteBook(book: BookEntity) {
+        //first removing from room
+        bookDao.deleteBook(bookId = book.id)
+        //and then from storage
+        val file = File(book.filePath)
+        if (file.exists()) {
+            file.delete()
+        }
     }
 }

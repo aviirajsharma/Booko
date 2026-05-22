@@ -47,9 +47,9 @@ class MyBooksScreenViewModel @Inject constructor(
         openPDFUseCase.invoke(context, filePath)
     }
 
-    fun deleteBook(bookId: String) {
+    fun deleteBook(book: BookEntity) {
         viewModelScope.launch {
-            deleteBookUseCase(bookId)
+            deleteBookUseCase(book)
         }
     }
 

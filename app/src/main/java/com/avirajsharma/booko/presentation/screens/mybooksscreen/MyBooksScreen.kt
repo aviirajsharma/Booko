@@ -70,8 +70,8 @@ fun MyBooksScreen(
                     items(data) { book ->
                         MyBooksCard(book = book, openPdf = { context, filePath ->
                             viewModel.openPdf(context, filePath)
-                        }, deleteBook = { bookId ->
-                            viewModel.deleteBook(bookId)
+                        }, deleteBook = { book ->
+                            viewModel.deleteBook(book)
                         })
                     }
                 }
@@ -86,7 +86,7 @@ fun MyBooksCard(
     modifier: Modifier = Modifier,
     book: BookEntity,
     openPdf: (Context, String) -> Unit,
-    deleteBook: (String) -> Unit
+    deleteBook: (BookEntity) -> Unit
 ) {
     val context = LocalContext.current
     ElevatedCard(
@@ -143,7 +143,7 @@ fun MyBooksCard(
                 )
 
                 IconButton(onClick = {
-                    deleteBook(book.id)
+                    deleteBook(book)
                 }) {
                     Icon(Icons.Default.Delete, contentDescription = "Delete Book")
                 }

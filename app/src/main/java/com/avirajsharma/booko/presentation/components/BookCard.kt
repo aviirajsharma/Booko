@@ -93,25 +93,6 @@ fun BookCard(book: Book, onBookCardClick: (String) -> Unit) {
                         overflow = TextOverflow.Ellipsis
                     )
                 }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                FilledTonalButton(
-                    onClick = {
-                        val intent = Intent(Intent.ACTION_VIEW, book.url.toUri())
-                        context.startActivity(intent)
-                    },
-                    modifier = Modifier.align(Alignment.End),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    Icon(
-                        Icons.Default.FileDownload,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(Modifier.width(8.dp))
-                    Text("Download", style = MaterialTheme.typography.labelLarge)
-                }
             }
         }
     }
