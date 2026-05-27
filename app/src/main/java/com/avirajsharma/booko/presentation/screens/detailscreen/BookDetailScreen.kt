@@ -18,6 +18,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.ReadMore
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -35,6 +36,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -48,7 +50,8 @@ import com.avirajsharma.booko.presentation.screens.LoadingScreen
 fun BookDetailScreen(
     modifier: Modifier = Modifier,
     viewModel: BookDetailScreenViewModel = hiltViewModel(),
-    bookId: String
+    bookId: String,
+    onReadOnlineClick: (String) -> Unit
 ) {
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -72,7 +75,7 @@ fun BookDetailScreen(
                 val response = state as DetailUiState.Success
                 DetailBookCard(book = response.data, onDownloadClick = {
                     viewModel.downloadBook(response.data)
-                })
+                }, onReadOnlineClick = onReadOnlineClick)
             }
         }
     }
@@ -83,7 +86,8 @@ fun BookDetailScreen(
 fun DetailBookCard(
     modifier: Modifier = Modifier,
     book: BookDetailResponse,
-    onDownloadClick: () -> Unit
+    onDownloadClick: () -> Unit,
+    onReadOnlineClick: (String) -> Unit
 ) {
     val scrollState = rememberScrollState()
 
@@ -194,22 +198,52 @@ fun DetailBookCard(
             Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.White)
         }
 
-        // Custom Overlay UI: Action Button
-        Button(
-            onClick = {
-                onDownloadClick()
-            },
+        // Custom Overlay UI: Action Buttons
+        Row(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 24.dp)
-                .fillMaxWidth(0.8f)
-                .height(56.dp),
-            shape = CircleShape,
-            elevation = ButtonDefaults.buttonElevation(8.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Icon(Icons.Default.Download, contentDescription = null)
-            Spacer(Modifier.width(8.dp))
-            Text("Download PDF")
+            Button(
+                onClick = {
+                    onReadOnlineClick(book.url)
+                },
+                modifier = Modifier
+                    .weight(1f)
+                    .height(56.dp),
+                shape = CircleShape,
+                elevation = ButtonDefaults.buttonElevation(8.dp)
+            ) {
+                Icon(Icons.Default.ReadMore, contentDescription = null)
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    "Read Online",
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+
+            Button(
+                onClick = {
+                    onDownloadClick()
+                },
+                modifier = Modifier
+                    .weight(1f)
+                    .height(56.dp),
+                shape = CircleShape,
+                elevation = ButtonDefaults.buttonElevation(8.dp)
+            ) {
+                Icon(Icons.Default.Download, contentDescription = null)
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    "Download PDF",
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
     }
 }
